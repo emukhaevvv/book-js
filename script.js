@@ -169,6 +169,3 @@ list.push_back(7);
 list.insert(2, 98);
 list.earse(4);
 list.earse(4);
-
-console.log(list._size);
-console.log(list);
