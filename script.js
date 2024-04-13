@@ -114,12 +114,12 @@ class LinkedList {
   }
 
   earse(index) {
-    if (index < 0 || index - 1 > this._size) return;
+    if (index < 0 || index > this._size) return;
 
     if (index === 0) {
       this.pop_front();
       return;
-    } else if (index - 1 === this._size) {
+    } else if (index === this._size) {
       this.pop_back();
       return;
     }
@@ -138,6 +138,30 @@ class LinkedList {
       i++;
       prevNode = curNode;
       curNode = curNode.next;
+    }
+  }
+
+  value_n_from_end(n) {
+    let size = this._size - n;
+
+    if (size < 0 || n > this._size || n < 0) return;
+
+    if (n === 0) {
+      return this.tail.val;
+    } else if (size === 0) {
+      return this.head.val;
+    }
+
+    let i = 0;
+    let curNode = this.head;
+
+    while (curNode) {
+      if (i === size) {
+        return curNode.val;
+      }
+
+      curNode = curNode.next;
+      i++;
     }
   }
 
@@ -160,7 +184,7 @@ class LinkedList {
 
 const list = new LinkedList();
 
-list.push_front(5);
+list.push_front(22);
 list.push_front(9);
 
 list.push_back(5);
