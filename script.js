@@ -19,7 +19,7 @@ class LinkedList {
 
     const node = new Node(val);
 
-    if (this.head === null) {
+    if (!this.head) {
       this.head = node;
       this.tail = node;
     } else {
@@ -29,9 +29,9 @@ class LinkedList {
   }
 
   pop_front() {
-    if (this.head === null) return;
+    if (!this.head) return;
 
-    if (this.head.next === null) {
+    if (!this.head.next) {
       this.head = null;
       this.tail = null;
 
@@ -49,7 +49,7 @@ class LinkedList {
 
     this._size += 1;
 
-    if (this.head === null) {
+    if (!this.head) {
       this.head = node;
       this.tail = node;
     } else {
@@ -59,7 +59,7 @@ class LinkedList {
   }
 
   pop_back() {
-    if (this.tail === null) return;
+    if (!this.tail) return;
 
     this._size -= 1;
 
@@ -81,6 +81,64 @@ class LinkedList {
 
     prevNode.next = null;
     this.tail = prevNode;
+  }
+
+  insert(index, value) {
+    if (!this.head || index - 1 > this._size) return;
+
+    if (index === 0) {
+      this.push_front(value);
+      return;
+    } else if (index === this._size) {
+      this.pop_back(value);
+      return;
+    }
+
+    let i = 0;
+    let prevNode = null;
+    let curNode = this.head;
+
+    while (curNode) {
+      if (i === index) {
+        const node = new Node(value);
+        node.next = curNode;
+        prevNode.next = node;
+
+        return;
+      }
+
+      i += 1;
+      prevNode = curNode;
+      curNode = curNode.next;
+    }
+  }
+
+  earse(index) {
+    if (index < 0 || index - 1 > this._size) return;
+
+    if (index === 0) {
+      this.pop_front();
+      return;
+    } else if (index - 1 === this._size) {
+      this.pop_back();
+      return;
+    }
+
+    let prevNode = null;
+    let curNode = this.head;
+
+    let i = 0;
+
+    while (curNode) {
+      if (index === i) {
+        prevNode.next = curNode.next;
+        return;
+      }
+
+      i++;
+      prevNode = curNode;
+      curNode = curNode.next;
+    }
   }
 
   size() {
@@ -108,7 +166,9 @@ list.push_front(9);
 list.push_back(5);
 list.push_back(7);
 
-list.pop_back();
-list.pop_back();
-list.pop_back();
-list.pop_back();
+list.insert(2, 98);
+list.earse(4);
+list.earse(4);
+
+console.log(list._size);
+console.log(list);
