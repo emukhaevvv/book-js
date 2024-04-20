@@ -83,6 +83,20 @@ class LinkedList {
 
     this.size -= 1;
   }
+
+  valueAt(index) {
+    if (this.empty || index > this.size - 1) return -1;
+
+    let node = this.head;
+    let i = 0;
+
+    while (i !== index) {
+      node = node.next;
+      i++;
+    }
+
+    return node.value;
+  }
 }
 
 const list = new LinkedList();
