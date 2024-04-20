@@ -97,6 +97,38 @@ class LinkedList {
 
     return node.value;
   }
+
+  insert(index, value) {
+    if (index === 0) {
+      this.pushFront(value);
+      return;
+    }
+
+    if (index > this.size - 1 || index < 0) return;
+
+    let i = 0;
+    let newNode = new Node(value, null);
+
+    let node = this.head;
+    let prevNode = null;
+
+    while (i < index) {
+      prevNode = node;
+      node = node.next;
+
+      i++;
+    }
+
+    prevNode.next = newNode;
+    newNode.next = node;
+  }
 }
 
 const list = new LinkedList();
+list.pushBack(34);
+list.pushBack(21);
+list.pushBack(98);
+list.pushBack(0);
+list.insert(0, 5);
+list.insert(2, 2);
+console.log(list);
