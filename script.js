@@ -43,6 +43,22 @@ class LinkedList {
 
     this.size -= 1;
   }
+
+  pushBack(value) {
+    const node = new Node(value, null);
+
+    if (this.empty) {
+      this.head = node;
+      this.tail = node;
+
+      this.empty = false;
+    } else {
+      this.tail.next = node;
+      this.tail = node;
+    }
+
+    this.size += 1;
+  }
 }
 
 const list = new LinkedList();
