@@ -28,9 +28,21 @@ class LinkedList {
 
     this.size += 1;
   }
+
+  popFront() {
+    if (this.empty) return;
+
+    if (!this.head.next) {
+      this.head = null;
+      this.tail = null;
+
+      this.empty = true;
+    } else {
+      this.head = this.head.next;
+    }
+
+    this.size -= 1;
+  }
 }
 
 const list = new LinkedList();
-
-list.pushFront(59);
-list.pushFront(22);
