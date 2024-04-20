@@ -59,6 +59,30 @@ class LinkedList {
 
     this.size += 1;
   }
+
+  popBack() {
+    if (this.empty) return;
+
+    if (this.size === 1) {
+      this.head = null;
+      this.tail = null;
+
+      this.empty = true;
+    } else {
+      let node = this.head;
+      let prevNode = null;
+
+      while (node.next) {
+        prevNode = node;
+        node = node.next;
+      }
+
+      prevNode.next = null;
+      this.tail = prevNode;
+    }
+
+    this.size -= 1;
+  }
 }
 
 const list = new LinkedList();
