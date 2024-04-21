@@ -122,13 +122,33 @@ class LinkedList {
     prevNode.next = newNode;
     newNode.next = node;
   }
+
+  erase(index) {
+    if (index < 0 || index > this.size - 1 || this.size === 0) return;
+
+    if (index === 0) {
+      this.popFront();
+      return;
+    } else if (index === this.size - 1) {
+      this.popBack();
+      return;
+    }
+
+    let node = this.head;
+    let prev = null;
+
+    let i = 0;
+
+    while (i !== index) {
+      prev = node;
+      node = node.next;
+
+      i++;
+    }
+
+    prev.next = node.next;
+    this.size -= 1;
+  }
 }
 
 const list = new LinkedList();
-list.pushBack(34);
-list.pushBack(21);
-list.pushBack(98);
-list.pushBack(0);
-list.insert(0, 5);
-list.insert(2, 2);
-console.log(list);
