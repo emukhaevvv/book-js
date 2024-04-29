@@ -5,17 +5,23 @@ class Stack {
     this.size = -1;
   }
 
+  isEmpty() {
+    return this.size === -1;
+  }
+
+  isFull() {
+    return this.max - 1 === this.size;
+  }
+
   push(val) {
-    if (this.max - 1 === this.size) {
-      return;
-    }
+    if (isFull()) return;
 
     this.size += 1;
     this.stack[this.size] = val;
   }
 
   pop() {
-    if (this.size === -1) return;
+    if (this.isEmpty()) return;
 
     const val = this.stack[this.size];
 
