@@ -13,6 +13,17 @@ class Stack {
     this.size += 1;
     this.stack[this.size] = val;
   }
+
+  pop() {
+    if (this.size === -1) return;
+
+    const val = this.stack[this.size];
+
+    this.stack[this.size] = undefined;
+    this.size -= 1;
+
+    return val;
+  }
 }
 
 const s = new Stack(4);
