@@ -1,47 +1,43 @@
 class Queue {
-  constructor(max) {
-    this.q = new Array(max);
-    this.max = max;
+  constructor(size) {
+    this.max = size;
     this.size = 0;
-    this.p = -1;
-    this.head = 0;
+    this.arr = new Array(size);
+    this.front = -1;
+    this.back = -1;
   }
 
-  isEmpty() {
-    return this.size === 0;
-  }
+  add(val) {
+    if (this.size === this.max) return;
 
-  isFull() {
-    return this.p === this.max - 1;
-  }
+    this.size += 1;
 
-  enqueue(val) {
-    if (this.isFull()) {
-      this.p = 0;
+    if (this.back === this.max - 1) {
+      this.back = 0;
     } else {
-      this.p += 1;
+      this.back += 1;
     }
 
-    if (this.size <= this.max - 1) {
-      this.size += 1;
-    }
+    this.arr[this.back] = val;
 
-    this.q[this.p] = val;
+    return this;
   }
 
-  dequeue() {
-    if (this.isEmpty()) return;
-
-    this.q[this.head] = 0;
-
-    if (this.head === this.max - 1) {
-      this.head = 0;
-    } else {
-      this.head += 1;
-    }
+  remove() {
+    if (this.size === 0) return;
 
     this.size -= 1;
+
+    if (this.front === this.max - 1) {
+      this.front = 0;
+    } else {
+      this.front += 1;
+    }
+
+    this.arr[this.front] = -1;
+
+    return this;
   }
 }
 
-const queue = new Queue(4);
+const q = new Queue(4);
