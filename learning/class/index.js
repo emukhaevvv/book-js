@@ -42,3 +42,19 @@ const u = new User("Vova", 34);
 u.getName();
 
 */
+
+//? Static, Private
+
+/*
+class Range {
+  #value = 50;
+
+  static getValue() {
+    return 20 + 20;
+  }
+
+  constructor() {
+    this.to = 50;
+  }
+}
+*/

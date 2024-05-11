@@ -1,92 +1,132 @@
-class Hash {
-  constructor(size) {
-    this.size = size;
-    this.hash = new Array(size);
+class Node {
+  constructor(key, value) {
+    this.value = value;
+    this.key = key;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.size = 0;
+    this.head = null;
   }
 
-  hashKey(key) {
-    let result = 0;
+  push(key, value) {
+    this.size += 1;
+    let isFinded = false;
 
-    for (let i = 0; i < result.length; i++) {
-      result += key.charCodeAt(i);
+    const node = new Node(key, value);
+
+    if (!this.head) {
+      this.head = node;
+      isFinded = true;
+    } else {
+      let cur = this.head;
+      let prev = null;
+
+      while (cur) {
+        if (key === cur.key) {
+          isFinded = true;
+          cur.value = value;
+        }
+
+        prev = cur;
+        cur = cur.next;
+      }
+
+      if (!isFinded) {
+        prev.next = node;
+      }
     }
 
-    return result % this.size;
+    return isFinded;
+  }
+}
+
+class HashTable {
+  constructor(max) {
+    this.max = max;
+    this.size = 0;
+    this.hash = new Array(max);
+  }
+
+  updateHashTable() {
+    this.max *= 2;
+
+    const temp = this.hash;
+
+    this.hash = new Array(this.max);
+    this.size = 0;
+
+    for (let i = 0; i < temp.length; i++) {
+      let hashValue = temp[i];
+
+      if (hashValue) {
+        let cur = hashValue.head;
+
+        while (cur) {
+          this.add(cur.key, cur.value);
+          cur = cur.next;
+        }
+      }
+    }
   }
 
   add(key, value) {
+    if (this.size === this.max) {
+      this.updateHashTable();
+    }
+
     const hashed = this.hashKey(key);
 
-    let first = null;
-    let isFinded = false;
-
     if (!this.hash[hashed]) {
-      this.hash[hashed] = [[key, value]];
-      isFinded = true;
-    } else {
-      for (let i = 0; i < this.hash[hashed].length; i++) {
-        if (this.hash[hashed][i][0] === key) {
-          this.hash[hashed][i][1] = value;
-          isFinded = true;
-          break;
-        }
-
-        if (this.hash[hashed][i][0] === null && !first) {
-          first = this.hash[hashed][i];
-        }
-      }
+      this.hash[hashed] = new LinkedList();
     }
 
-    if (!isFinded) {
-      if (first) {
-        first[0] = key;
-        first[1] = value;
-      } else {
-        this.hash[hashed].push([key, value]);
-      }
-    }
+    let isExist = this.hash[hashed].push(key, value);
+    if (isExist) this.size += 1;
   }
 
   remove(key) {
     const hashed = this.hashKey(key);
 
-    if (!this.hash[hashed]) return;
+    if (this.hash[hashed]) {
+      let cur = this.hash[hashed].head;
+      let prev = null;
 
-    for (let i = 0; i < this.hash[hashed].length; i++) {
-      if (this.hash[hashed][i][0] === key) {
-        this.hash[hashed][i][0] = null;
-        this.hash[hashed][i][1] = null;
+      while (cur) {
+        if (cur.key === key) {
+          if (!prev) {
+            if (cur) {
+              this.hash[hashed].head = cur.next || null;
+            } else {
+              this.hash[hashed].head = null;
+            }
+          } else {
+            prev.next = cur.next || null;
+          }
+          break;
+        }
+
+        prev = cur;
+        cur = cur.next;
       }
+
+      this.hash[hashed].size -= 1;
+      this.size -= 1;
     }
   }
 
-  get(key) {
-    const hashed = this.hashKey(key);
+  hashKey(key) {
+    let hash = 0;
 
-    if (!this.hash[hashed]) return;
-
-    for (let i = 0; i < this.hash[hashed].length; i++) {
-      if (this.hash[hashed][i][0] === key) {
-        return this.hash[hashed][i][1];
-      }
+    for (let i = 0; i < key.length; i++) {
+      hash += key.charCodeAt(i);
     }
 
-    return;
-  }
-
-  exists(key) {
-    const hashed = this.hashKey(key);
-
-    if (!this.hash[hashed]) return false;
-
-    for (let i = 0; i < this.hash[hashed].length; i++) {
-      if (this.hash[hashed][i][0] === key) {
-        return true;
-      }
-    }
-
-    return false;
+    return hash % this.max;
   }
 }
 
-const hash = new Hash(2);
+const obj = new HashTable(2);
